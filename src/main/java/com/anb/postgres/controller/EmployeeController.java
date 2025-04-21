@@ -1,5 +1,6 @@
 package com.anb.postgres.controller;
 
+import com.anb.postgres.dto.EmployeeResponse;
 import com.anb.postgres.entity.Employee;
 import com.anb.postgres.services.EmployeeService;
 import lombok.Getter;
@@ -29,9 +30,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee emp){
-       Employee saved  =  employeeService.addEmployee(emp);
-       return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    public ResponseEntity<EmployeeResponse> addEmployee(@RequestBody Employee emp){
+       EmployeeResponse response  =  employeeService.addEmployee(emp);
+       return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
 

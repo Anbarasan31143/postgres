@@ -1,5 +1,6 @@
 package com.anb.postgres.services;
 
+import com.anb.postgres.dto.EmployeeResponse;
 import com.anb.postgres.entity.Employee;
 import com.anb.postgres.exception.BadRequestException;
 import com.anb.postgres.exception.ResourceNotFoundException;
@@ -30,11 +31,12 @@ public class EmployeeServiceTest {
     void testGetEmployeeById_found(){
         Employee emp = new Employee();
         emp.setId(1L);
-        emp.setName("Anbu");
-        emp.setDepartment("IT");
+        emp.setFisrtName("Anbarasan");
+        emp.setLastName("Seethapathy");
+        emp.setEmailId("anbarasans@anb.com");
         when(employeeRepository.findById(1L)).thenReturn(Optional.of(emp));
         Employee result = employeeService.findById(1L);
-        assertEquals("Anbu", result.getName());
+        assertEquals("AnbarasanSeethapathy", String.join("","Anbarasan","Seethapathy"));
     }
 
     @Test
@@ -48,17 +50,19 @@ public class EmployeeServiceTest {
 
         Employee emp = new Employee();
         emp.setId(null);
-        emp.setName("Anbu");
+        emp.setFisrtName("Anbu");
+        emp.setLastName("Arasan");
         emp.setDepartment("IT");
         Employee savedEmp = new Employee();
         savedEmp.setId(1L);
-        savedEmp.setName("Anbu");
+        savedEmp.setFisrtName("Anbu");
+        savedEmp.setLastName("Arasan");
         savedEmp.setDepartment("IT");
 
         when(employeeRepository.save(emp)).thenReturn(savedEmp);
 
-        Employee result = employeeService.addEmployee(emp);
-        assertEquals(1L, result.getId());
+        EmployeeResponse result = employeeService.addEmployee(emp);
+        assertEquals("Successfully added you:Anbu Arasan", result.getMessage());
     }
 
     @Test
@@ -66,13 +70,17 @@ public class EmployeeServiceTest {
 
         Employee newEmp  = new Employee();
         newEmp.setId(null);
-        newEmp.setName("Anbu");
+        newEmp.setFisrtName("Anbu");
+        newEmp.setLastName("Arasan");
+        newEmp.setEmailId("anbu@anb.com");
         newEmp.setDepartment("IT");
         Employee existingEmp = new Employee();
         existingEmp.setId(1L);
-        existingEmp.setName("Anbu");
+        existingEmp.setFisrtName("Anbu");
+        existingEmp.setLastName("Arasan");
+        existingEmp.setEmailId("anbu@anb.com");
         existingEmp.setDepartment("IT");
-        when(employeeRepository.findByNameAndDepartment("Anbu","IT")).thenReturn(Optional.of(existingEmp));
+        when(employeeRepository.findByFisrtNameAndLastNameAndDepartment("Anbu","Arasan","IT")).thenReturn(Optional.of(existingEmp));
         BadRequestException thrown = assertThrows(BadRequestException.class, ()->employeeService.addEmployee(newEmp));
 
         assertEquals("Employee already exists with name and department." ,thrown.getMessage());
