@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Slf4j
 @Service
@@ -22,12 +23,18 @@ public class EmployeeServiceImpl implements EmployeeService {
    @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Override
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
+    }
    @Override
     public Employee findById(Long Id) {
 
       return  employeeRepository.findById(Id)
               .orElseThrow(()-> new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + Id));
    }
+
+
 
     @Override
     public void deleteById(Long Id) {
@@ -42,9 +49,34 @@ public class EmployeeServiceImpl implements EmployeeService {
        }
     }
 
+    @Override
+    public Employee updateById(Long Id, Employee emp) {
+        if (!employeeRepository.existsById(Id)) {
+            throw new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + Id);
+        }
+
+        validateEmployee(emp);
+
+        try {
+            Employee existingEmployee = employeeRepository.findById(Id)
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + Id));
+
+            existingEmployee.setFisrtName(emp.getFisrtName());
+            existingEmployee.setLastName(emp.getLastName());
+            existingEmployee.setDepartment(emp.getDepartment());
+            existingEmployee.setPhoneNumber(emp.getPhoneNumber());
+            existingEmployee.setAddress(emp.getAddress());
+
+            log.info("Employee updated: ID " + Id);
+            return employeeRepository.save(existingEmployee);
+        } catch (Exception e) {
+            throw new InternalServerException(ErrorMessages.NETWORK_ISSUE);
+        }
+    }
+
 
     public EmployeeResponse addEmployee(Employee emp){
-        EmployeeResponse employeeResponse = new EmployeeResponse();
+        var employeeResponse = new EmployeeResponse();
        validateEmployee(emp);
        Optional<Employee> duplicate = employeeRepository.findByFisrtNameAndLastNameAndDepartment(emp.getFisrtName(),emp.getLastName(), emp.getDepartment());
 
@@ -57,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         String email = (emp.getFisrtName() + "." + emp.getLastName() + "@anb.com").toLowerCase();
         emp.setEmailId(email);
         employeeRepository.save(emp);
-
+        employeeResponse.setId(emp.getId());
         employeeResponse.setEmail(email);
         employeeResponse.setMessage(EmployeeConstants.SUCCESS+ emp.getFisrtName() + " " + emp.getLastName());
         return  employeeResponse;
