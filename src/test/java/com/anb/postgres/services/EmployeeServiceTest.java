@@ -30,7 +30,7 @@ public class EmployeeServiceTest {
     @Test
     void testGetEmployeeById_found(){
         Employee emp = new Employee();
-        emp.setId(1L);
+        emp.setEmployeeId(1L);
         emp.setFisrtName("Anbarasan");
         emp.setLastName("Seethapathy");
         emp.setEmailId("anbarasans@anb.com");
@@ -49,12 +49,12 @@ public class EmployeeServiceTest {
     void testAddEmployee_success() {
 
         Employee emp = new Employee();
-        emp.setId(null);
+        emp.setEmployeeId(null);
         emp.setFisrtName("Anbu");
         emp.setLastName("Arasan");
         emp.setDepartment("IT");
         Employee savedEmp = new Employee();
-        savedEmp.setId(1L);
+        savedEmp.setEmployeeId(1L);
         savedEmp.setFisrtName("Anbu");
         savedEmp.setLastName("Arasan");
         savedEmp.setDepartment("IT");
@@ -69,13 +69,13 @@ public class EmployeeServiceTest {
     void testAddEmployee_duplicateEntry_shouldThrowBadRequest(){
 
         Employee newEmp  = new Employee();
-        newEmp.setId(null);
+        newEmp.setEmployeeId(null);
         newEmp.setFisrtName("Anbu");
         newEmp.setLastName("Arasan");
         newEmp.setEmailId("anbu@anb.com");
         newEmp.setDepartment("IT");
         Employee existingEmp = new Employee();
-        existingEmp.setId(1L);
+        existingEmp.setEmployeeId(1L);
         existingEmp.setFisrtName("Anbu");
         existingEmp.setLastName("Arasan");
         existingEmp.setEmailId("anbu@anb.com");

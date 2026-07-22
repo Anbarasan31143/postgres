@@ -22,20 +22,20 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getAll(){
         return ResponseEntity.ok(employeeService.findAll());
     }
-    @GetMapping("/{Id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long Id){
-        return ResponseEntity.ok(employeeService.findById(Id));
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long employeeId){
+        return ResponseEntity.ok(employeeService.findById(employeeId));
     }
 
-    @DeleteMapping("/{Id}")
-    public ResponseEntity<Employee> deleteEmployeeById(@PathVariable Long Id) {
-        employeeService.deleteById(Id);
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity<Employee> deleteEmployeeById(@PathVariable Long employeeId) {
+        employeeService.deleteById(employeeId);
        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{Id}")
-    public ResponseEntity<Employee> updateEmployeeById(@PathVariable Long Id, @RequestBody Employee emp) {
-        Employee updatedEmployee = employeeService.updateById(Id, emp);
+    @PutMapping("/{employeeId}")
+    public ResponseEntity<Employee> updateEmployeeById(@PathVariable Long employeeId, @RequestBody Employee emp) {
+        Employee updatedEmployee = employeeService.updateById(employeeId, emp);
         return ResponseEntity.ok(updatedEmployee);
     }
 

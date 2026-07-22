@@ -28,21 +28,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findAll();
     }
    @Override
-    public Employee findById(Long Id) {
+    public Employee findById(Long employeeId) {
 
-      return  employeeRepository.findById(Id)
-              .orElseThrow(()-> new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + Id));
+      return  employeeRepository.findById(employeeId)
+              .orElseThrow(()-> new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + employeeId));
    }
 
 
 
     @Override
-    public void deleteById(Long Id) {
-       if(!employeeRepository.existsById(Id)){
-           throw new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND +Id);
+    public void deleteById(Long employeeId) {
+       if(!employeeRepository.existsById(employeeId)){
+           throw new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND +employeeId);
        }
        try {
-           employeeRepository.deleteById(Id);
+           employeeRepository.deleteById(employeeId);
        }
        catch (Exception ex){
            throw  new DeleteOperationException(ErrorMessages.DELETION_FAILED);
@@ -50,16 +50,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateById(Long Id, Employee emp) {
-        if (!employeeRepository.existsById(Id)) {
-            throw new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + Id);
+    public Employee updateById(Long employeeId, Employee emp) {
+        if (!employeeRepository.existsById(employeeId)) {
+            throw new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + employeeId);
         }
 
         validateEmployee(emp);
 
         try {
-            Employee existingEmployee = employeeRepository.findById(Id)
-                    .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + Id));
+            Employee existingEmployee = employeeRepository.findById(employeeId)
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + employeeId));
 
             existingEmployee.setFisrtName(emp.getFisrtName());
             existingEmployee.setLastName(emp.getLastName());
@@ -67,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             existingEmployee.setPhoneNumber(emp.getPhoneNumber());
             existingEmployee.setAddress(emp.getAddress());
 
-            log.info("Employee updated: ID " + Id);
+            log.info("Employee updated: ID " + employeeId);
             return employeeRepository.save(existingEmployee);
         } catch (Exception e) {
             throw new InternalServerException(ErrorMessages.NETWORK_ISSUE);
@@ -89,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         String email = (emp.getFisrtName() + "." + emp.getLastName() + "@anb.com").toLowerCase();
         emp.setEmailId(email);
         employeeRepository.save(emp);
-        employeeResponse.setId(emp.getId());
+        employeeResponse.setEmployeeId(emp.getEmployeeId());
         employeeResponse.setEmail(email);
         employeeResponse.setMessage(EmployeeConstants.SUCCESS+ emp.getFisrtName() + " " + emp.getLastName());
         return  employeeResponse;

@@ -1,20 +1,18 @@
 package com.anb.postgres.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@SequenceGenerator(name = "emp_seq", sequenceName = "emp_sequence", initialValue = 123456, allocationSize = 1)
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "emp_seq")
+    private Long employeeId;
     private String fisrtName;
     private String lastName;
     private String department;
