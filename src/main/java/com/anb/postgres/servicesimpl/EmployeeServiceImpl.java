@@ -88,7 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             // Generate Email
         String email = (emp.getFisrtName() + "." + emp.getLastName() + "@anb.com").toLowerCase();
         emp.setEmailId(email);
-        employeeRepository.save(emp);
+        emp = employeeRepository.save(emp);
         employeeResponse.setEmployeeId(emp.getEmployeeId());
         employeeResponse.setEmail(email);
         employeeResponse.setMessage(EmployeeConstants.SUCCESS+ emp.getFisrtName() + " " + emp.getLastName());
