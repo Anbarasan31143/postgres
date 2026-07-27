@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             Employee existingEmployee = employeeRepository.findById(employeeId)
                     .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + employeeId));
 
-            existingEmployee.setFisrtName(emp.getFisrtName());
+            existingEmployee.setFirstName(emp.getFirstName());
             existingEmployee.setLastName(emp.getLastName());
             existingEmployee.setDepartment(emp.getDepartment());
             existingEmployee.setPhoneNumber(emp.getPhoneNumber());
@@ -78,20 +78,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponse addEmployee(Employee emp){
         var employeeResponse = new EmployeeResponse();
        validateEmployee(emp);
-       Optional<Employee> duplicate = employeeRepository.findByFisrtNameAndLastNameAndDepartment(emp.getFisrtName(),emp.getLastName(), emp.getDepartment());
+       Optional<Employee> duplicate = employeeRepository.findByFirstNameAndLastNameAndDepartment(emp.getFirstName(),emp.getLastName(), emp.getDepartment());
 
         if(duplicate.isPresent()){
-            log.info(" Duplicate found " +String.join(" ", emp.getFisrtName(), emp.getLastName()));
+            log.info(" Duplicate found " +String.join(" ", emp.getFirstName(), emp.getLastName()));
             throw new BadRequestException(ErrorMessages.DUPLICATE_EMPLOYEE);
         }
         try{
             // Generate Email
-        String email = (emp.getFisrtName() + "." + emp.getLastName() + "@anb.com").toLowerCase();
+        String email = (emp.getFirstName() + "." + emp.getLastName() + "@anb.com").toLowerCase();
         emp.setEmailId(email);
         emp = employeeRepository.save(emp);
         employeeResponse.setEmployeeId(emp.getEmployeeId());
         employeeResponse.setEmail(email);
-        employeeResponse.setMessage(EmployeeConstants.SUCCESS+ emp.getFisrtName() + " " + emp.getLastName());
+        employeeResponse.setMessage(EmployeeConstants.SUCCESS+ emp.getFirstName() + " " + emp.getLastName());
         return  employeeResponse;
     } catch (Exception e) {
        throw new InternalServerException(ErrorMessages.NETWORK_ISSUE);
@@ -101,10 +101,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private void validateEmployee(Employee emp){
        if(emp != null){
-           if( emp.getFisrtName().isBlank() || emp.getLastName().isBlank()) {
+           if( emp.getFirstName() == null || emp.getFirstName().isBlank() || emp.getLastName() == null || emp.getLastName().isBlank()) {
                throw new BadRequestException(ErrorMessages.EMPLOYEE_NAME_REQUIRED);
            }
-           if( emp.getDepartment().isBlank() ){
+           if( emp.getDepartment() == null || emp.getDepartment().isBlank() ){
                throw new BadRequestException(ErrorMessages.INVALID_EMPLOYEE_DATA);
 
            }

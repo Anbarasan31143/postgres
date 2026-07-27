@@ -36,7 +36,7 @@ public class EmployeeServiceTest {
     private Employee createEmployee(Long employeeId, String firstName, String lastName, String department) {
         Employee emp = new Employee();
         emp.setEmployeeId(employeeId);
-        emp.setFisrtName(firstName);
+        emp.setFirstName(firstName);
         emp.setLastName(lastName);
         emp.setDepartment(department);
         return emp;
@@ -91,8 +91,8 @@ public class EmployeeServiceTest {
 
         List<Employee> result = employeeService.findAll();
         assertEquals(2, result.size());
-        assertEquals("John", result.get(0).getFisrtName());
-        assertEquals("Jane", result.get(1).getFisrtName());
+        assertEquals("John", result.get(0).getFirstName());
+        assertEquals("Jane", result.get(1).getFirstName());
     }
 
     @Test
@@ -169,7 +169,7 @@ public class EmployeeServiceTest {
 
         Employee result = employeeService.updateById(100000L, updateEmp);
         
-        assertEquals("Johnny", result.getFisrtName());
+        assertEquals("Johnny", result.getFirstName());
         assertEquals("Updated", result.getLastName());
         assertEquals("Engineering", result.getDepartment());
     }
@@ -225,7 +225,7 @@ public class EmployeeServiceTest {
         Employee emp = createEmployee(null, "Anbu", "Arasan", "IT");
         Employee savedEmp = createEmployeeWithEmail(100000L, "Anbu", "Arasan", "IT", "anbu.arasan@anb.com");
 
-        when(employeeRepository.findByFisrtNameAndLastNameAndDepartment("Anbu", "Arasan", "IT"))
+        when(employeeRepository.findByFirstNameAndLastNameAndDepartment("Anbu", "Arasan", "IT"))
             .thenReturn(Optional.empty());
         when(employeeRepository.save(any(Employee.class))).thenReturn(savedEmp);
 
@@ -240,7 +240,7 @@ public class EmployeeServiceTest {
         Employee newEmp = createEmployeeWithEmail(null, "Anbu", "Arasan", "IT", "anbu@anb.com");
         Employee existingEmp = createEmployeeWithEmail(100000L, "Anbu", "Arasan", "IT", "anbu@anb.com");
 
-        when(employeeRepository.findByFisrtNameAndLastNameAndDepartment("Anbu","Arasan","IT"))
+        when(employeeRepository.findByFirstNameAndLastNameAndDepartment("Anbu","Arasan","IT"))
             .thenReturn(Optional.of(existingEmp));
         
         BadRequestException thrown = assertThrows(BadRequestException.class, 
@@ -293,7 +293,7 @@ public class EmployeeServiceTest {
         Employee savedEmp = createEmployeeWithEmail(100000L, "John", "Doe", "IT", "john.doe@anb.com");
         savedEmp.setPhoneNumber(9876543210L);
 
-        when(employeeRepository.findByFisrtNameAndLastNameAndDepartment("John","Doe","IT"))
+        when(employeeRepository.findByFirstNameAndLastNameAndDepartment("John","Doe","IT"))
             .thenReturn(Optional.empty());
         when(employeeRepository.save(any(Employee.class))).thenReturn(savedEmp);
 
@@ -316,7 +316,7 @@ public class EmployeeServiceTest {
         Employee emp = createEmployee(null, "Alice", "Johnson", "HR");
         Employee savedEmp = createEmployeeWithEmail(100000L, "Alice", "Johnson", "HR", "alice.johnson@anb.com");
 
-        when(employeeRepository.findByFisrtNameAndLastNameAndDepartment("Alice","Johnson","HR"))
+        when(employeeRepository.findByFirstNameAndLastNameAndDepartment("Alice","Johnson","HR"))
             .thenReturn(Optional.empty());
         when(employeeRepository.save(any(Employee.class))).thenReturn(savedEmp);
 
@@ -330,13 +330,13 @@ public class EmployeeServiceTest {
         
         doAnswer(invocation -> {
             Employee emp = invocation.getArgument(0);
-            emp.setEmailId(emp.getFisrtName().toLowerCase() + "." + emp.getLastName().toLowerCase() + "@anb.com");
+            emp.setEmailId(emp.getFirstName().toLowerCase() + "." + emp.getLastName().toLowerCase() + "@anb.com");
             return emp;
         }).when(employeeRepository).save(any(Employee.class));
 
         newEmployees.forEach(emp -> {
-            when(employeeRepository.findByFisrtNameAndLastNameAndDepartment(
-                emp.getFisrtName(), emp.getLastName(), emp.getDepartment()))
+            when(employeeRepository.findByFirstNameAndLastNameAndDepartment(
+                emp.getFirstName(), emp.getLastName(), emp.getDepartment()))
                 .thenReturn(Optional.empty());
             
             EmployeeResponse result = employeeService.addEmployee(emp);

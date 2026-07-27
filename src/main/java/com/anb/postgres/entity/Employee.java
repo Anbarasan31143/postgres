@@ -13,7 +13,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "emp_seq")
     private Long employeeId;
-    private String fisrtName;
+    private String firstName;
     private String lastName;
     private String department;
     private String emailId;
