@@ -44,7 +44,7 @@ public class ChatController {
                 );
                 return ResponseEntity.ok(response);
             }
-            else if(userMessage.toLowerCase().contains("update employee") || userMessage.toLowerCase().contains("edit employee")){
+                else if(userMessage.toLowerCase().contains("update employee") || userMessage.toLowerCase().contains("edit employee")){
                 // Create a map with the user message for the orchestrator
                 Map<String, String> variables = new java.util.HashMap<>();
                 variables.put("userMessage", userMessage);
@@ -58,9 +58,21 @@ public class ChatController {
                 );
                 return ResponseEntity.ok(response);
 
-
             }
-            
+            else if(userMessage.toLowerCase().contains("find employee") || userMessage.toLowerCase().contains("get employee")) {
+                // Create a map with the user message for the orchestrator
+                Map<String, String> variables = new java.util.HashMap<>();
+                variables.put("userMessage", userMessage);
+
+                Employee employeeResp = agentOrchestrator.orchestrateFindEmployee("find-employee", variables);
+
+                ChatResponse response = new ChatResponse(
+                        "success",
+                        "Employee found successfully",
+                        employeeResp
+                );
+                return ResponseEntity.ok(response);
+            }
             // Default response for other messages
             ChatResponse response = new ChatResponse(
                 "info",
