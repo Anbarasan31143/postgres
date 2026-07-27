@@ -3,6 +3,7 @@ package com.anb.postgres.controller;
 import com.anb.postgres.dto.ChatRequest;
 import com.anb.postgres.dto.ChatResponse;
 import com.anb.postgres.dto.EmployeeResponse;
+import com.anb.postgres.entity.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,22 @@ public class ChatController {
                     employeeResp
                 );
                 return ResponseEntity.ok(response);
+            }
+            else if(userMessage.toLowerCase().contains("update employee") || userMessage.toLowerCase().contains("edit employee")){
+                // Create a map with the user message for the orchestrator
+                Map<String, String> variables = new java.util.HashMap<>();
+                variables.put("userMessage", userMessage);
+
+                Employee employeeResp = agentOrchestrator.orchestrateUpdateEmployee("edit-employee", variables);
+
+                ChatResponse response = new ChatResponse(
+                        "success",
+                        "Employee updated successfully",
+                        employeeResp
+                );
+                return ResponseEntity.ok(response);
+
+
             }
             
             // Default response for other messages

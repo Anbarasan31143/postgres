@@ -55,17 +55,27 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + employeeId);
         }
 
-        validateEmployee(emp);
+       // validateEmployee(emp);
 
         try {
             Employee existingEmployee = employeeRepository.findById(employeeId)
                     .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND + employeeId));
 
-            existingEmployee.setFirstName(emp.getFirstName());
-            existingEmployee.setLastName(emp.getLastName());
-            existingEmployee.setDepartment(emp.getDepartment());
-            existingEmployee.setPhoneNumber(emp.getPhoneNumber());
-            existingEmployee.setAddress(emp.getAddress());
+            if((emp.getFirstName() != null && !emp.getFirstName().isBlank())) {
+                existingEmployee.setFirstName(emp.getFirstName());
+            }
+            if(emp.getLastName() != null && !emp.getLastName().isBlank()) {
+                existingEmployee.setLastName(emp.getLastName());
+            }
+            if(emp.getDepartment() != null && !emp.getDepartment().isBlank()) {
+                existingEmployee.setDepartment(emp.getDepartment());
+            }
+            if(emp.getPhoneNumber() != null && !String.valueOf(emp.getPhoneNumber()).isBlank()) {
+                existingEmployee.setPhoneNumber(emp.getPhoneNumber());
+            }
+            if(emp.getAddress() != null && !emp.getAddress().isBlank()) {
+                existingEmployee.setAddress(emp.getAddress());
+            }
 
             log.info("Employee updated: ID " + employeeId);
             return employeeRepository.save(existingEmployee);
