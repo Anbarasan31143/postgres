@@ -82,7 +82,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if(duplicate.isPresent()){
             log.info(" Duplicate found " +String.join(" ", emp.getFirstName(), emp.getLastName()));
-            throw new BadRequestException(ErrorMessages.DUPLICATE_EMPLOYEE);
+            throw new BadRequestException(ErrorMessages.DUPLICATE_EMPLOYEE + String.join(" ", emp.getFirstName(), emp.getLastName()) +emp.getDepartment());
         }
         try{
             // Generate Email
