@@ -12,7 +12,7 @@ IMPORTANT RULES:
 - Do NOT use template placeholders in the output
 
 Example outputs:
-If user says "Add employee John Doe from IT department":
+If user says "Add/Create/Register employee John Doe from IT department":
 {
   "firstName": "John",
   "lastName": "Doe",
@@ -21,7 +21,7 @@ If user says "Add employee John Doe from IT department":
   "address": null
 }
 
-If user says "Add employee Sarah Smith from HR with phone 8765432109":
+If user says "Add/Create/Register employee Sarah Smith from HR with phone 8765432109":
 {
   "firstName": "Sarah",
   "lastName": "Smith",
@@ -30,7 +30,7 @@ If user says "Add employee Sarah Smith from HR with phone 8765432109":
   "address": null
 }
 
-If user says "Add employee Mike Johnson from Finance at 456 Oak Street phone 9876543210":
+If user says "Add/Create/Register employee Mike Johnson from Finance at 456 Oak Street phone 9876543210":
 {
   "firstName": "Mike",
   "lastName": "Johnson",

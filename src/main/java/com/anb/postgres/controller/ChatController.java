@@ -4,6 +4,7 @@ import com.anb.postgres.dto.ChatRequest;
 import com.anb.postgres.dto.ChatResponse;
 import com.anb.postgres.dto.EmployeeResponse;
 import com.anb.postgres.entity.Employee;
+import com.anb.postgres.util.EmployeeIntent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class ChatController {
             String userMessage = request.getMessage().trim();
             
             // Check if user wants to add employee
-            if (userMessage.toLowerCase().contains("add employee")) {
+            if (EmployeeIntent.ADD.matches(userMessage)) {
                 // Create a map with the user message for the orchestrator
                 Map<String, String> variables = new java.util.HashMap<>();
                 variables.put("userMessage", userMessage);
@@ -44,7 +45,7 @@ public class ChatController {
                 );
                 return ResponseEntity.ok(response);
             }
-                else if(userMessage.toLowerCase().contains("update employee") || userMessage.toLowerCase().contains("edit employee")){
+                else if(EmployeeIntent.EDIT.matches(userMessage)){
                 // Create a map with the user message for the orchestrator
                 Map<String, String> variables = new java.util.HashMap<>();
                 variables.put("userMessage", userMessage);
@@ -59,7 +60,7 @@ public class ChatController {
                 return ResponseEntity.ok(response);
 
             }
-            else if(userMessage.toLowerCase().contains("find employee") || userMessage.toLowerCase().contains("get employee")) {
+            else if(EmployeeIntent.FIND.matches(userMessage)) {
                 // Create a map with the user message for the orchestrator
                 Map<String, String> variables = new java.util.HashMap<>();
                 variables.put("userMessage", userMessage);

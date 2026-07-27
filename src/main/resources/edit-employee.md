@@ -29,7 +29,7 @@ If user says "For employee 8832, change phone number to 9123456789":
 }
 }
 
-If user says "Edit employee ID 4521, set address to 12 Elm Street and department to HR":
+If user says "Edit/Update/Modify employee ID 4521, set address to 12 Elm Street and department to HR":
 {
 "employeeId": 4521,
 "updates": {
@@ -38,7 +38,7 @@ If user says "Edit employee ID 4521, set address to 12 Elm Street and department
 }
 }
 
-If user says "Update employee 1023: last name to Johnston, phone 8887776665":
+If user says "Edit/Update/Modify employee 1023: last name to Johnston, phone 8887776665":
 {
 "employeeId": 1023,
 "updates": {
@@ -47,11 +47,12 @@ If user says "Update employee 1023: last name to Johnston, phone 8887776665":
 }
 }
 
-If user says "Update John Doe's department to Finance" (no employeeId given):
+If user says "Edit/Update/Modify John Doe's department to Finance" (no employeeId given):
 {
 "employeeId": null,
 "updates": {
 "department": "Finance"
+}
 }
 }
 
