@@ -5,9 +5,12 @@ import com.anb.postgres.entity.Employee;
 import com.anb.postgres.services.EmployeeService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +46,17 @@ public class EmployeeController {
     public ResponseEntity<EmployeeResponse> addEmployee(@RequestBody Employee emp){
        EmployeeResponse response  =  employeeService.addEmployee(emp);
        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/employees/**")
+                    .allowedOrigins("http://localhost:5173")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE");
+        }
     }
 }
 

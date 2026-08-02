@@ -150,4 +150,39 @@ public class AgentOrchestrator {
 
         return employeeService.findById(employeeId);
     }
+    public void orchestrateDeleteEmployee(String skillName, Map<String, String> variables) throws Exception {
+        String template = skillLoader.loadSkill(skillName);
+
+        String filled = template;
+        if (variables != null) {
+            for (var e : variables.entrySet()) {
+                log.info("Replacing placeholder: {} with value: {}", e.getKey(), e.getValue());
+                filled = filled.replace("{{" + e.getKey() + "}}", e.getValue());
+            }
+        }
+
+        // Always call LLM (whether mock or real) to parse and extract data
+        String llmOutput;
+        if (llmClient == null) {
+            llmOutput = filled;
+        } else {
+            llmOutput = llmClient.generate(filled);
+        }
+
+        int start = llmOutput.indexOf('{');
+        int end = llmOutput.lastIndexOf('}');
+        if (start == -1 || end == -1 || end <= start) {
+            throw new IllegalArgumentException("LLM output does not contain a JSON object");
+        }
+        String json = llmOutput.substring(start, end + 1);
+        JsonNode root = objectMapper.readTree(json);
+
+        JsonNode idNode = root.get("employeeId");
+        if (idNode == null || idNode.isNull()) {
+            throw new IllegalArgumentException("LLM output did not contain an employeeId");
+        }
+        Long employeeId = idNode.asLong();
+
+        employeeService.deleteById(employeeId);
+    }
 }

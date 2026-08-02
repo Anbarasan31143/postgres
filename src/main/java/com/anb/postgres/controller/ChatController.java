@@ -74,6 +74,19 @@ public class ChatController {
                 );
                 return ResponseEntity.ok(response);
             }
+            else if(EmployeeIntent.DELETE.matches(userMessage)) {
+                // Create a map with the user message for the orchestrator
+                Map<String, String> variables = new java.util.HashMap<>();
+                variables.put("userMessage", userMessage);
+
+                agentOrchestrator.orchestrateDeleteEmployee("delete-employee", variables);
+
+                ChatResponse response = new ChatResponse(
+                        "success",
+                        "Employee deleted successfully"
+                );
+                return ResponseEntity.ok(response);
+            }
             // Default response for other messages
             ChatResponse response = new ChatResponse(
                 "info",
