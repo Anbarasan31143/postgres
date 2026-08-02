@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 @Component
 public class MockLlmClient implements LlmClient {
     private static final Logger log = LoggerFactory.getLogger(MockLlmClient.class);
+    private static final String ADD_ACTIONS = "add|create|register|insert";
 
     @Override
     public String generate(String prompt){
@@ -67,19 +68,23 @@ public class MockLlmClient implements LlmClient {
     }
 
     private String extractFirstName(String message) {
-        Pattern p = Pattern.compile("(?i)add\\s+employee\\s+(\\w+)\\s+(\\w+)");
+        Pattern p = Pattern.compile(
+                "(?i)(" + ADD_ACTIONS + ")\\s+employee\\s+(\\w+)\\s+(\\w+)"
+        );
         Matcher m = p.matcher(message);
         if (m.find()) {
-            return m.group(1);
+            return m.group(2);
         }
         return "Unknown";
     }
 
     private String extractLastName(String message) {
-        Pattern p = Pattern.compile("(?i)add\\s+employee\\s+(\\w+)\\s+(\\w+)");
+        Pattern p = Pattern.compile(
+                "(?i)(" + ADD_ACTIONS + ")\\s+employee\\s+(\\w+)\\s+(\\w+)"
+        );
         Matcher m = p.matcher(message);
         if (m.find()) {
-            return m.group(2);
+            return m.group(3);
         }
         return "User";
     }
