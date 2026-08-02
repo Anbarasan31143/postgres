@@ -49,6 +49,11 @@ public class EmployeeController {
     }
 
 
+    @GetMapping("/search")
+    public ResponseEntity<Employee> searchByName(@RequestParam String name){
+        Employee employee = employeeService.searchByName(name);
+        return ResponseEntity.ok(employee);
+    }
     @Configuration
     public class WebConfig implements WebMvcConfigurer {
         @Override

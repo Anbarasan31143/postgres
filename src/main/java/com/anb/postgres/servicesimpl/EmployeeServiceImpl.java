@@ -35,6 +35,11 @@ public class EmployeeServiceImpl implements EmployeeService {
    }
 
 
+   @Override
+   public Employee searchByName(String empName) {
+    return employeeRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(empName, empName)
+            .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND_BY_NAME + empName));
+   }
 
     @Override
     public void deleteById(Long employeeId) {

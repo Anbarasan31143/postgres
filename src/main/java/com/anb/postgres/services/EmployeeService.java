@@ -8,6 +8,7 @@ import java.util.List;
 public interface EmployeeService {
 
     Employee findById(Long employeeId);
+    Employee searchByName(String name);
     List<Employee> findAll();
     void deleteById(Long employeeId);
     Employee updateById(Long employeeId, Employee emp);

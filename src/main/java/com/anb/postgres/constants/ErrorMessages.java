@@ -8,4 +8,5 @@ public class ErrorMessages {
     public static final String DELETION_FAILED = "Deletion failed due to internal error.";
     public static final String INVALID_EMPLOYEE_DATA = "Given employee data is not correct.";
     public static final String INVALID_CONTACT_NUMNER = "Invalid / Phone number must be number.";
+    public static final String EMPLOYEE_NOT_FOUND_BY_NAME = "No employee found given name: ";
 }
